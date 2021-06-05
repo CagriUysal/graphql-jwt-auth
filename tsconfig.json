@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    // project options
+    "target": "ESNEXT",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "sourceMap": true,
+
+    // strict features
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+
+    // module resolution
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+
+    // linter checks
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    // experimental
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+
+    // advanced
+    "resolveJsonModule": true
+  },
+  "exclude": ["node_modules"],
+  "include": ["./src/**/*.ts"]
+}
