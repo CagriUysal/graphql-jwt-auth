@@ -4,6 +4,7 @@ import adminOnly from "./queries/adminOnly";
 
 import signup from "./mutations/signup";
 import signin from "./mutations/signin";
+import logout from "./mutations/logout";
 
 import { protect } from "../../utils/auth";
 
@@ -16,5 +17,6 @@ export default {
   Mutation: {
     signup,
     signin,
+    logout: protect(logout),
   },
 };

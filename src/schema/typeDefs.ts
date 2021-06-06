@@ -32,7 +32,7 @@ export default gql`
   }
 
   type SigninResponse {
-    token: String!
+    accessToken: String!
   }
 
   # Queries
@@ -46,5 +46,6 @@ export default gql`
   type Mutation {
     signup(input: SignupInput!): Response!
     signin(input: SigninInput!): SigninResponse!
+    logout: Response!
   }
 `;

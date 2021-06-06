@@ -1,8 +1,12 @@
 import { AuthenticationError } from "apollo-server-errors";
 import bcrypt from "bcrypt";
 
-import { createToken } from "../../../utils/auth";
 import Context from "../context";
+import {
+  createRefreshToken,
+  createAccessToken,
+  setRefreshTokenCookie,
+} from "../../../utils/auth";
 
 interface SigninInput {
   name: string;
@@ -10,13 +14,13 @@ interface SigninInput {
 }
 
 interface SigninResponse {
-  token: string;
+  accessToken: string;
 }
 
 const signin = async (
   _: any,
   { input }: { input: SigninInput },
-  { prisma }: Context
+  { prisma, res }: Context
 ): Promise<SigninResponse> => {
   const user = await prisma.user.findUnique({ where: { name: input.name } });
   if (!user) throw new AuthenticationError("Username or password is invalid.");
@@ -26,9 +30,12 @@ const signin = async (
     throw new AuthenticationError("Username or password is invalid.");
   }
 
-  const token = createToken(user);
+  const refreshToken = createRefreshToken(user);
+  setRefreshTokenCookie(res, refreshToken);
 
-  return { token };
+  const accessToken = createAccessToken(user);
+
+  return { accessToken };
 };
 
 export default signin;
