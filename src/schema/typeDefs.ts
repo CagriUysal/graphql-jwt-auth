@@ -14,24 +14,37 @@ export default gql`
     role: Role!
   }
 
-  # signup
+  type Response {
+    message: String
+  }
+
+  # Signup
   input SignupInput {
     name: String!
     password: String!
     role: Role!
   }
 
-  # Queries
-  type Query {
-    hello: String!
+  # Signin
+  input SigninInput {
+    name: String!
+    password: String!
   }
 
-  type SignupResponse {
-    message: String!
+  type SigninResponse {
+    token: String!
+  }
+
+  # Queries
+  type Query {
+    all: Response!
+    userProtected: Response!
+    adminOnly: Response!
   }
 
   # Mutations
   type Mutation {
-    signup(input: SignupInput): SignupResponse!
+    signup(input: SignupInput!): Response!
+    signin(input: SigninInput!): SigninResponse!
   }
 `;

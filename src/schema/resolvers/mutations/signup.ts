@@ -3,6 +3,8 @@ import { Role } from "@prisma/client";
 import Joi from "joi";
 import bcrypt from "bcrypt";
 
+import Context from "../context";
+
 interface SingupInput {
   name: string;
   password: string;
@@ -20,9 +22,9 @@ const signupPayloadSchema = Joi.object({
 });
 
 const singup = async (
-  _,
+  _: any,
   { input }: { input: SingupInput },
-  { prisma }
+  { prisma }: Context
 ): Promise<SingupResponse> => {
   const { error } = signupPayloadSchema.validate(input);
   if (error) throw new UserInputError(error.details[0].message);

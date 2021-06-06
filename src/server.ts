@@ -12,8 +12,8 @@ export const start = async () => {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: () => {
-      return { prisma };
+    context: ({ req }) => {
+      return { req, prisma };
     },
   });
   await server.start();
