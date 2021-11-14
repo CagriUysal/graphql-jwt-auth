@@ -24,9 +24,9 @@
     "typescript": "^4.3.2"
   },
   "scripts": {
-    "watch": "tsc -w",
-    "start": "nodemon dist/index.js --watch dist",
-    "dev": "yarn watch & yarn start",
+    "watch:ts": "tsc -w",
+    "watch:js": "nodemon dist/index.js --watch dist",
+    "dev": "yarn watch:ts & yarn watch:js",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate"
   },
