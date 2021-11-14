@@ -6,14 +6,17 @@ import jwt from "jsonwebtoken";
 import config from "../config";
 import prisma from "../db";
 
+type TokenPayload = {
+  id: number;
+  role: Role;
+};
+
 export const createAccessToken = (user: User) => {
-  return jwt.sign(
-    { id: user.id, role: user.role },
-    config.secrets.accessToken,
-    {
-      expiresIn: "15m",
-    }
-  );
+  const payload: TokenPayload = { id: user.id, role: user.role };
+
+  return jwt.sign(payload, config.secrets.accessToken, {
+    expiresIn: "15m",
+  });
 };
 
 export const createRefreshToken = (user: User) => {
@@ -34,7 +37,10 @@ export const refreshToken = async (req: Request, res: Response) => {
   if (!refreshToken) return res.status(400).end();
 
   try {
-    const { id } = jwt.verify(refreshToken, config.secrets.refreshToken);
+    const { id } = jwt.verify(
+      refreshToken,
+      config.secrets.refreshToken
+    ) as TokenPayload;
 
     const user = await prisma.user.findUnique({ where: { id } });
     if (!user) return res.status(400).end();
@@ -58,7 +64,10 @@ export const protect =
 
     const token = bearer.split("Bearer ")[1].trim();
     try {
-      const { id, role } = await jwt.verify(token, config.secrets.accessToken);
+      const { id, role } = (await jwt.verify(
+        token,
+        config.secrets.accessToken
+      )) as TokenPayload;
 
       if (allowedRoles.length !== 0 && !allowedRoles.includes(role)) {
         throw new AuthenticationError("Not Auth");
