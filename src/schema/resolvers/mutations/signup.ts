@@ -1,5 +1,5 @@
 import { ApolloError, UserInputError } from "apollo-server-express";
-import { Role } from "@prisma/client";
+import { Role } from ".prisma/client";
 import Joi from "joi";
 import bcrypt from "bcrypt";
 

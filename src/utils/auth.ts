@@ -1,4 +1,4 @@
-import { User, Role } from "@prisma/client";
+import { User, Role } from ".prisma/client";
 import { AuthenticationError } from "apollo-server-errors";
 import jwt from "jsonwebtoken";
 

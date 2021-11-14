@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from ".prisma/client";
 import { Request } from "express";
 
 export default interface Context {
