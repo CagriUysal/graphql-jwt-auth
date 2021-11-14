@@ -4,13 +4,19 @@ import jwt from "jsonwebtoken";
 
 import config from "../config";
 
-export const createToken = (user: User) => {
-  return jwt.sign({ id: user.id }, config.secrets.jwt);
+type TokenPayload = {
+  id: number;
 };
 
+export const createToken = (user: User) => {
+  const payload: TokenPayload = { id: user.id };
+  return jwt.sign(payload, config.secrets.jwt);
+};
+
+// TODO: use correct types instead of `any`s :)
 export const protect =
-  (next, ...allowedRoles: Role[]) =>
-  async (root, args, context, info) => {
+  (next: any, ...allowedRoles: Role[]) =>
+  async (root: any, args: any, context: any, info: any) => {
     const bearer = context.req.headers.authorization;
 
     if (!bearer || !bearer.startsWith("Bearer ")) {
@@ -19,7 +25,10 @@ export const protect =
 
     const token = bearer.split("Bearer ")[1].trim();
     try {
-      const { id } = await jwt.verify(token, config.secrets.jwt);
+      const { id } = (await jwt.verify(
+        token,
+        config.secrets.jwt
+      )) as TokenPayload;
       const user = await context.prisma.user.findUnique({ where: { id } });
 
       if (user === null) throw new AuthenticationError("Not Auth");
